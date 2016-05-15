@@ -1,18 +1,18 @@
 //
-//  HZDropMenuListTests.m
-//  HZDropMenuListTests
+//  DropDownMenuListTests.m
+//  DropDownMenuListTests
 //
-//  Created by 王会洲 on 16/5/14.
+//  Created by 王会洲 on 16/5/13.
 //  Copyright © 2016年 王会洲. All rights reserved.
 //
 
 #import <XCTest/XCTest.h>
 
-@interface HZDropMenuListTests : XCTestCase
+@interface DropDownMenuListTests : XCTestCase
 
 @end
 
-@implementation HZDropMenuListTests
+@implementation DropDownMenuListTests
 
 - (void)setUp {
     [super setUp];

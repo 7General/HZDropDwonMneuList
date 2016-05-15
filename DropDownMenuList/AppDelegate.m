@@ -1,12 +1,13 @@
 //
 //  AppDelegate.m
-//  HZDropMenuList
+//  DropDownMenuList
 //
-//  Created by 王会洲 on 16/5/14.
+//  Created by 王会洲 on 16/5/13.
 //  Copyright © 2016年 王会洲. All rights reserved.
 //
 
 #import "AppDelegate.h"
+#import "MainViewController.h"
 
 @interface AppDelegate ()
 
@@ -17,6 +18,13 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    self.window.backgroundColor = [UIColor whiteColor];
+    //UINavigationController * nav = [[UINavigationController alloc] initWithRootViewController:[[MainViewController alloc] init]];
+    self.window.rootViewController = [[MainViewController alloc] init];
+    [self.window makeKeyAndVisible];
+    
+    
     return YES;
 }
 
