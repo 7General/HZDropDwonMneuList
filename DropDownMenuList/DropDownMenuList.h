@@ -12,7 +12,7 @@
 @interface HZIndexPath : NSObject
 @property (nonatomic, assign) NSInteger  row; // 行
 @property (nonatomic, assign) NSInteger  column; //列
-
+// 构造HZIndexPath
 +(instancetype)indexPathWithColumn:(NSInteger)column row:(NSInteger)row;
 
 @end
@@ -21,21 +21,26 @@
 
 @protocol DropDownMenuListDataSouce <NSObject>
 @required
+// 设置显示列的内容
+-(NSMutableArray *)menuNumberOfRowInColumn;
 // 设置多少行显示
 -(NSInteger)menu:(DropDownMenuList *)menu numberOfRowsInColum:(NSInteger)column;
-
+// 设置显示没行的内容
 -(NSString *)menu:(DropDownMenuList *)menu titleForRowAtIndexPath:(HZIndexPath *)indexPath;
 
--(NSMutableArray *)menuNumberOfRowInColumn;
+
 @optional
 // 每行图片
 -(NSString *)menu:(DropDownMenuList *)menu imageNameForRowAtIndexPath:(HZIndexPath *)indexPath;
- @end
+
+@end
 
 
 @protocol DropDownMenuListDelegate <NSObject>
 @optional
+// 点击每一行的效果
 - (void)menu:(DropDownMenuList *)segment didSelectRowAtIndexPath:(HZIndexPath *)indexPath;
+// 点击没一列的效果
 - (void)menu:(DropDownMenuList *)segment didSelectTitleAtColumn:(NSInteger)column;
 
 @end
@@ -57,8 +62,7 @@
 
 // 获取Title
 -(NSString *)titleForRowAtIndexPath:(HZIndexPath *)indexPath;
-// 默认选中
--(void)selectDefaultIndexPath;
+
 
 
 -(instancetype)initWithOrgin:(CGPoint)origin andHeight:(CGFloat)height;

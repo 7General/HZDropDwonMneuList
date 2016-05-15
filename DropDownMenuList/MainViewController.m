@@ -55,7 +55,7 @@
     
 
     
-    self.dropMenu = [DropDownMenuList show:CGPointMake(0, 200) andHeight:44];
+    self.dropMenu = [DropDownMenuList show:CGPointMake(0, 64) andHeight:44];
     self.dropMenu.delegate = self;
     self.dropMenu.dataSource = self;
     [self.view addSubview:self.dropMenu];

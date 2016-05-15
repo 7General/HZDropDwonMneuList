@@ -351,10 +351,6 @@
     return [self.dataSource menu:self titleForRowAtIndexPath:indexPath];
 }
 
--(void)selectDefaultIndexPath {
-
-}
-
 
 -(void)setMenuWithSelectedRow:(NSInteger)row {
     self.currentSelectedRows[self.currrntSelectedColumn - 1100] = @(row);
