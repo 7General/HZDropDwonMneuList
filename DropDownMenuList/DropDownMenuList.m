@@ -169,7 +169,7 @@
         sender.selected = NO;
     }
     sender.selected = !sender.selected;
-    [self removeMenu];
+    [self removeMenu:0.25];
 
    if (sender.tag != self.BtnTag || sender.selected) {
         sender.imageView.transform = CGAffineTransformMakeRotation(M_PI);
@@ -248,15 +248,15 @@
 - (void)coverClick
 {
     self.btnSelected = NO;
-    [self removeMenu];
+    [self removeMenu:0.2];
 }
 
 /**
  *  菜单消失
  */
-- (void)removeMenu
+- (void)removeMenu:(CGFloat)AniateTime
 {
-    [UIView animateWithDuration:0.2 animations:^{
+    [UIView animateWithDuration:(AniateTime) animations:^{
         CGRect frame = CGRectMake(0, self.frame.size.height + self.frame.origin.y, DDMWIDTH, 0);
         self.DropDownMenuView.frame = frame;
         
@@ -267,6 +267,12 @@
         [self.cover removeFromSuperview];
     }];
 }
+
+-(void)rightNowDismis {
+    self.btnSelected = NO;
+    [self removeMenu:0];
+}
+
 
 /**
  *  回归角标

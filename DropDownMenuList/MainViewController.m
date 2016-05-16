@@ -88,6 +88,11 @@
 //    }
 }
 
+-(void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self.dropMenu rightNowDismis];
+}
+
 -(NSMutableArray *)menuNumberOfRowInColumn {
     return @[@"全国",@"所有税种"].mutableCopy;
 }

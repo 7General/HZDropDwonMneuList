@@ -63,8 +63,13 @@
 // 获取Title
 -(NSString *)titleForRowAtIndexPath:(HZIndexPath *)indexPath;
 
-
-
 -(instancetype)initWithOrgin:(CGPoint)origin andHeight:(CGFloat)height;
+
+/*！
+ *  页面即可消失没有动画
+ *  解决在退出界面时，当前window上继续保留原有界面的bug
+ * 看官只需要在你调用的VC上得viewWillDisappear里调用该方法
+ */
+-(void)rightNowDismis;
 
 @end
