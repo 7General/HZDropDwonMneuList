@@ -39,12 +39,12 @@
 -(NSMutableArray *)classIfy {
     if (!_classIfy) {
         _classIfy = [NSMutableArray new];
-        [_classIfy addObject:@"7"];
-        [_classIfy addObject:@"8"];
-        [_classIfy addObject:@"9"];
-        [_classIfy addObject:@"0"];
-        [_classIfy addObject:@"10"];
-        [_classIfy addObject:@"11"];
+//        [_classIfy addObject:@"7"];
+//        [_classIfy addObject:@"8"];
+//        [_classIfy addObject:@"9"];
+//        [_classIfy addObject:@"0"];
+//        [_classIfy addObject:@"10"];
+//        [_classIfy addObject:@"11"];
     }
     return _classIfy;
 }

@@ -132,9 +132,14 @@
     for (NSInteger index = 0; index < self.titleMenuArry.count; index++) {
         [self.currentSelectedRows addObject:@(0)];
         
-        HZIndexPath * path = [HZIndexPath indexPathWithColumn:index row:0];
-        NSString * titleString = [_dataSource menu:self titleForRowAtIndexPath:path];
-        [self.titles addObject:titleString];
+        
+        // 每一列对应返回的数据
+         NSInteger column = [_dataSource menu:self numberOfRowsInColum:index];
+        if (column > 0) {
+            HZIndexPath * path = [HZIndexPath indexPathWithColumn:index row:0];
+            NSString * titleString = [_dataSource menu:self titleForRowAtIndexPath:path];
+            [self.titles addObject:titleString];
+        }
         
         self.titleButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [self.titleButton setImage:[UIImage imageNamed:@"rightImage_state"] forState:UIControlStateNormal];
@@ -311,7 +316,7 @@
     if (self.dataSource && [self.dataSource respondsToSelector:@selector(menu:numberOfRowsInColum:)]) {
         return [self.dataSource menu:self numberOfRowsInColum:self.currrntSelectedColumn - 1100];
     }else {
-        return 5;
+        return 0;
     }
 }
 
