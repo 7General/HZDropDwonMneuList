@@ -27,24 +27,22 @@
 -(NSMutableArray *)sort {
     if (_sort == nil) {
         _sort = [NSMutableArray new];
-        [_sort addObject:@"1"];
-        [_sort addObject:@"2"];
-        [_sort addObject:@"3"];
-        [_sort addObject:@"4"];
-        [_sort addObject:@"5"];
-        [_sort addObject:@"6"];
+        [_sort addObject:@"江西国税总局"];
+        [_sort addObject:@"全国国税总局"];
+        [_sort addObject:@"河南国税"];
+        [_sort addObject:@"江南国税"];
     }
     return _sort;
 }
 -(NSMutableArray *)classIfy {
     if (!_classIfy) {
         _classIfy = [NSMutableArray new];
-//        [_classIfy addObject:@"7"];
-//        [_classIfy addObject:@"8"];
-//        [_classIfy addObject:@"9"];
-//        [_classIfy addObject:@"0"];
-//        [_classIfy addObject:@"10"];
-//        [_classIfy addObject:@"11"];
+        [_classIfy addObject:@"7"];
+        [_classIfy addObject:@"8"];
+        [_classIfy addObject:@"9"];
+        [_classIfy addObject:@"0"];
+        [_classIfy addObject:@"10"];
+        [_classIfy addObject:@"11"];
     }
     return _classIfy;
 }

@@ -32,9 +32,7 @@
 
 @interface DropDownMenuList ()
 
-@property (nonatomic, assign) NSInteger  BtnTag;
 
-@property (nonatomic,assign,getter=isSelected) BOOL btnSelected;
 // 标题按钮
 @property (nonatomic, strong) UIButton * titleButton;
 
@@ -143,9 +141,14 @@
         
         self.titleButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [self.titleButton setImage:[UIImage imageNamed:@"rightImage_state"] forState:UIControlStateNormal];
+        [self.titleButton setImage:[UIImage imageNamed:@"rightImage_state_normal"] forState:UIControlStateSelected];
+        
         [self.titleButton setTitle:self.titleMenuArry[index] forState:UIControlStateNormal];
         [self.titleButton.titleLabel setFont:[UIFont systemFontOfSize:17]];
+        
         [self.titleButton setTitleColor:DDMColor(18, 108, 255) forState:UIControlStateNormal];
+        [self.titleButton setTitleColor:[UIColor redColor] forState:UIControlStateSelected];
+        
         [self.titleButton setTag:index + 1100];
         self.titleButton.frame = CGRectMake(index * titleBtnWidth, 0, titleBtnWidth, self.titleMenuHeight);
         [self addSubview:self.titleButton];
@@ -153,7 +156,6 @@
         // 设置左右排列
         [self.titleButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -(self.titleButton.imageView.bounds.size.width + 4), 0, self.titleButton.imageView.bounds.size.width + 4)];
         [self.titleButton setImageEdgeInsets:UIEdgeInsetsMake(0, self.titleButton.titleLabel.bounds.size.width, 0, -self.titleButton.titleLabel.bounds.size.width)];
-
 
         if (index > 0) {
             UIImageView *line = [[UIImageView alloc] init];
@@ -170,14 +172,15 @@
 -(void)titleButtonClick:(UIButton *)sender {
     self.currrntSelectedColumn = sender.tag;
     
-    if (self.btnSelected == NO) {
-        sender.selected = NO;
-    }
-    sender.selected = !sender.selected;
+    self.titleButton.selected = NO;
+    sender.selected = YES;
+    self.titleButton = sender;
+    
+    
     [self removeMenu:0.25];
 
-   if (sender.tag != self.BtnTag || sender.selected) {
-        sender.imageView.transform = CGAffineTransformMakeRotation(M_PI);
+   if (sender.selected) {
+        //sender.imageView.transform = CGAffineTransformMakeRotation(M_PI);
         [self setupCover];
         self.DropDownMenuView.backgroundColor = DDMColor(255, 255, 255);
         [UIView animateWithDuration:(0.25) animations:^{
@@ -187,21 +190,15 @@
             self.leftTableView.frame = CGRectMake(0, 0, DDMWIDTH  , 300);
         }];
        
-       
-        self.btnSelected = YES;
-        
         // 回归其他角标
-        for (UIView * view in self.subviews) {
-            if (view.tag > 1000 && view.tag != sender.tag) {
-                ((UIButton *)view).imageView.transform = CGAffineTransformMakeRotation(0);
-            }
-        }
+        //for (UIView * view in self.subviews) {
+//            if (view.tag > 1000 && view.tag != sender.tag) {
+//                ((UIButton *)view).imageView.transform = CGAffineTransformMakeRotation(0);
+//            }
+        //}
     }
     else {
-        self.btnSelected = NO;
-        if (sender.tag == 1100) {
-            sender.imageView.transform = CGAffineTransformMakeRotation(0);
-        }
+
     }
     
     // 代理点击事件
@@ -210,11 +207,9 @@
     }
     [self.leftTableView reloadData];
     
-    self.BtnTag = sender.tag;
+    
 }
 -(void)initView {
-    self.btnSelected = YES;
-    self.BtnTag = -1;
     self.currrntSelectedColumn = 1100;
 }
 
@@ -252,7 +247,6 @@
  */
 - (void)coverClick
 {
-    self.btnSelected = NO;
     [self removeMenu:0.2];
 }
 
@@ -274,7 +268,6 @@
 }
 
 -(void)rightNowDismis {
-    self.btnSelected = NO;
     [self removeMenu:0];
 }
 
@@ -283,11 +276,11 @@
  *  回归角标
  */
 -(void)resetImageViewTransform {
-    for (UIView * view in self.subviews) {
-        if (view.tag > 1000) {
-            ((UIButton *)view).imageView.transform = CGAffineTransformMakeRotation(0);
-        }
-    }
+//    for (UIView * view in self.subviews) {
+//        if (view.tag > 1000) {
+//            ((UIButton *)view).imageView.transform = CGAffineTransformMakeRotation(0);
+//        }
+//    }
 }
 
 
@@ -354,9 +347,21 @@
     if (self.delegate && [self.delegate respondsToSelector:@selector(menu:didSelectRowAtIndexPath:)]) {
         [self.delegate menu:self didSelectRowAtIndexPath:path];
     }
+    [self setSelectTitle:indexPath];
     [self dismiss];
 }
 
+#pragma mark - 设置选中cell重新设置成标题
+-(void)setSelectTitle:(NSIndexPath *)indexPath {
+    [UIView animateWithDuration:0.15 animations:^{
+        NSString * selectTitle = [self titleForRowAtIndexPath:[HZIndexPath indexPathWithColumn:self.currrntSelectedColumn - 1100 row:indexPath.row]];
+        UIButton * btn =  (UIButton *)[self viewWithTag:self.currrntSelectedColumn];
+        [btn setTitle:selectTitle forState:UIControlStateNormal];
+        // 设置左右排列
+        [btn setTitleEdgeInsets:UIEdgeInsetsMake(0, -(btn.imageView.bounds.size.width + 4), 0, btn.imageView.bounds.size.width + 4)];
+        [btn setImageEdgeInsets:UIEdgeInsetsMake(0, btn.titleLabel.bounds.size.width, 0, -btn.titleLabel.bounds.size.width)];
+    }];
+}
 
 -(NSString *)titleForRowAtIndexPath:(HZIndexPath *)indexPath {
     return [self.dataSource menu:self titleForRowAtIndexPath:indexPath];
