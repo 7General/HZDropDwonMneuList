@@ -95,7 +95,7 @@
         
         self.titleMenuHeight = height;
     }
-
+    
     return self;
 }
 
@@ -149,7 +149,7 @@
         /**默认添加全部为0*/
         [self.currentSelectedRows addObject:@(0)];
         // 每一列对应返回的数据
-         NSInteger column = [_dataSource menu:self numberOfRowsInColum:index];
+        NSInteger column = [_dataSource menu:self numberOfRowsInColum:index];
         if (column > 0) {
             HZIndexPath * path = [HZIndexPath indexPathWithColumn:index row:0];
             NSString * titleString = [_dataSource menu:self titleForRowAtIndexPath:path];
@@ -158,15 +158,19 @@
         
         self.titleButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [self.titleButton setImage:[UIImage imageNamed:@"rightImage_state"] forState:UIControlStateNormal];
+        [self.titleButton setImage:[UIImage imageNamed:@"rightImage_state"] forState:UIControlStateHighlighted];
         [self.titleButton setImage:[UIImage imageNamed:@"rightImage_state_normal"] forState:UIControlStateSelected];
+        [self.titleButton setImage:[UIImage imageNamed:@"rightImage_state_normal"] forState:UIControlStateSelected | UIControlStateHighlighted];
+      
         
         [self.titleButton setTitle:self.titleMenuArry[index] forState:UIControlStateNormal];
         [self.titleButton.titleLabel setFont:[UIFont systemFontOfSize:17]];
         
         [self.titleButton setTitleColor:DDMColor(18, 108, 255) forState:UIControlStateNormal];
+        [self.titleButton setTitleColor:DDMColor(18, 108, 255) forState:UIControlStateHighlighted];
         [self.titleButton setTitleColor:[UIColor redColor] forState:UIControlStateSelected];
-        
-        self.titleButton.adjustsImageWhenHighlighted = NO;
+        [self.titleButton setTitleColor:[UIColor redColor] forState:UIControlStateSelected | UIControlStateHighlighted];
+        [self.titleButton setAdjustsImageWhenHighlighted:NO];
         
         [self.titleButton setTag:index + 1100];
         self.titleButton.frame = CGRectMake(index * titleBtnWidth, 0, titleBtnWidth, self.titleMenuHeight);
@@ -175,7 +179,7 @@
         // 设置左右排列
         [self.titleButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -(self.titleButton.imageView.bounds.size.width + 4), 0, self.titleButton.imageView.bounds.size.width + 4)];
         [self.titleButton setImageEdgeInsets:UIEdgeInsetsMake(0, self.titleButton.titleLabel.bounds.size.width, 0, -self.titleButton.titleLabel.bounds.size.width)];
-
+        
         /**添加竖线*/
         if (index > 0) {
             UIImageView *line = [[UIImageView alloc] init];
@@ -196,12 +200,13 @@
     self.titleButton.selected = NO;
     sender.selected = YES;
     self.titleButton = sender;
-    
+//  self.titleButton.selected = !sender.selected;
     
     [self removeMenu:0.25];
-
-   if (sender.selected) {
-//        sender.imageView.transform = CGAffineTransformMakeRotation(M_PI);
+    
+    if (sender.selected) {
+//      if (self.titleButton.selected) {
+        //sender.imageView.transform = CGAffineTransformMakeRotation(M_PI);
         [self setupCover];
         self.DropDownMenuView.backgroundColor = DDMColor(255, 255, 255);
         [UIView animateWithDuration:(0.25) animations:^{
@@ -210,12 +215,12 @@
             [CurrentWindow addSubview:self.DropDownMenuView];
             self.leftTableView.frame = CGRectMake(0, 0, DDMWIDTH  , 300);
         }];
-       
+        
         // 回归其他角标
         //for (UIView * view in self.subviews) {
-//            if (view.tag > 1000 && view.tag != sender.tag) {
-//                ((UIButton *)view).imageView.transform = CGAffineTransformMakeRotation(0);
-//            }
+        //            if (view.tag > 1000 && view.tag != sender.tag) {
+        //                ((UIButton *)view).imageView.transform = CGAffineTransformMakeRotation(0);
+        //            }
         //}
     }
     else {
@@ -237,18 +242,18 @@
  */
 - (void)setupCover
 {
-        // 添加一个遮盖按钮
-        UIButton *cover = [[UIButton alloc] init];
-        CGFloat coverY = self.frame.size.height + self.frame.origin.y;
-        cover.frame = CGRectMake(0, coverY, DDMWIDTH, DDMHEIGHT);
-
-        [UIView animateWithDuration:0.1 animations:^{
-            cover.backgroundColor = [DDMColor(0, 0, 0) colorWithAlphaComponent:0.5];
-        }];
+    // 添加一个遮盖按钮
+    UIButton *cover = [[UIButton alloc] init];
+    CGFloat coverY = self.frame.size.height + self.frame.origin.y;
+    cover.frame = CGRectMake(0, coverY, DDMWIDTH, DDMHEIGHT);
     
-        [cover addTarget:self action:@selector(coverClick) forControlEvents:UIControlEventTouchUpInside];
-        [CurrentWindow addSubview:cover];
-        self.cover = cover;
+    [UIView animateWithDuration:0.1 animations:^{
+        cover.backgroundColor = [DDMColor(0, 0, 0) colorWithAlphaComponent:0.5];
+    }];
+    
+    [cover addTarget:self action:@selector(coverClick) forControlEvents:UIControlEventTouchUpInside];
+    [CurrentWindow addSubview:cover];
+    self.cover = cover;
 }
 
 
@@ -347,16 +352,16 @@
         cell.textLabel.text = [self.dataSource menu:self titleForRowAtIndexPath:path];
     }
     // 图片
-//    if (self.dataSource && [self.dataSource respondsToSelector:@selector(menu:imageNameForRowAtIndexPath:)]) {
-//        NSString * imageName = [self.dataSource menu:self imageNameForRowAtIndexPath:path];
-//        cell.imageView.image = [UIImage imageNamed:imageName];
-//    }
+    //    if (self.dataSource && [self.dataSource respondsToSelector:@selector(menu:imageNameForRowAtIndexPath:)]) {
+    //        NSString * imageName = [self.dataSource menu:self imageNameForRowAtIndexPath:path];
+    //        cell.imageView.image = [UIImage imageNamed:imageName];
+    //    }
     NSInteger currentIndex = (self.currrntSelectedColumn - 1100);
     NSInteger  titleSelectRow = [self.currentSelectedRows[currentIndex] integerValue];
     if (indexPath.row == titleSelectRow) {
         [self.leftTableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:titleSelectRow inSection:0] animated:YES scrollPosition:UITableViewScrollPositionMiddle];
     }
-
+    
     return cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

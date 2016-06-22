@@ -47,9 +47,29 @@
     return _classIfy;
 }
 
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = DDMColor(192, 191, 192);
+
+//    UIButton * Button = [UIButton buttonWithType:UIButtonTypeCustom];
+//    [Button setImage:[UIImage imageNamed:@"rightImage_state"] forState:UIControlStateNormal];
+//    [Button setImage:[UIImage imageNamed:@"rightImage_state_normal"] forState:UIControlStateSelected];
+//    
+//    [Button setTitle:@"企业" forState:UIControlStateNormal];
+//    [Button.titleLabel setFont:[UIFont systemFontOfSize:17]];
+//    [Button setTitleColor:DDMColor(18, 108, 255) forState:UIControlStateNormal];
+//    [Button setTitleColor:[UIColor redColor] forState:UIControlStateSelected];
+//    [Button setAdjustsImageWhenHighlighted:NO];
+//    
+//    self.titleButton.frame = CGRectMake(100, 100, 100, 80);
+//    [self.view addSubview:self.titleButton];
+//    [self.titleButton addTarget:self action:@selector(titleButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+//    // 设置左右排列
+//    [self.titleButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -(self.titleButton.imageView.bounds.size.width + 4), 0, self.titleButton.imageView.bounds.size.width + 4)];
+//    [self.titleButton setImageEdgeInsets:UIEdgeInsetsMake(0, self.titleButton.titleLabel.bounds.size.width, 0, -self.titleButton.titleLabel.bounds.size.width)];
+    
     
 
     
@@ -59,6 +79,8 @@
     [self.view addSubview:self.dropMenu];
     
 }
+
+
 -(void)menu:(DropDownMenuList *)segment didSelectTitleAtColumn:(NSInteger)column{
 
 //    if (column == 1100) {
