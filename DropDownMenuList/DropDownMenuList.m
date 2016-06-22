@@ -19,7 +19,14 @@
     }
     return self;
 }
-
+/**
+ *  添加构造器
+ *
+ *  @param column 列
+ *  @param row    行
+ *
+ *  @return
+ */
 +(instancetype)indexPathWithColumn:(NSInteger)column row:(NSInteger)row {
     return [[self alloc] initWithColumn:column row:row];
 }
@@ -68,7 +75,14 @@
 
 @implementation DropDownMenuList
 
-
+/**
+ *  初始化变量
+ *
+ *  @param origin 原点
+ *  @param height 导航栏高度
+ *
+ *  @return
+ */
 -(instancetype)initWithOrgin:(CGPoint)origin andHeight:(CGFloat)height {
     self = [super initWithFrame:CGRectMake(origin.x, origin.y, DDMWIDTH, height)];
     if (self) {
@@ -113,24 +127,27 @@
     return self;
 }
 
+/**重写datasource的setter方法*/
 -(void)setDataSource:(id<DropDownMenuListDataSouce>)dataSource {
+    /**检查是否匹配*/
     if (_dataSource == dataSource) {
         return;
     }
     _dataSource = dataSource;
     
+    /**取前段设置导航栏的内容*/
     if (_dataSource && [_dataSource respondsToSelector:@selector(menuNumberOfRowInColumn)]) {
         self.titleMenuArry = [_dataSource menuNumberOfRowInColumn];
     }
     
+    /**选中数据,根据有多少列，则组成由多少数据*/
     self.currentSelectedRows = [[NSMutableArray alloc] initWithCapacity:self.titleMenuArry.count];
     
     CGFloat  titleBtnWidth = DDMWIDTH / self.titleMenuArry.count;
     
     for (NSInteger index = 0; index < self.titleMenuArry.count; index++) {
+        /**默认添加全部为0*/
         [self.currentSelectedRows addObject:@(0)];
-        
-        
         // 每一列对应返回的数据
          NSInteger column = [_dataSource menu:self numberOfRowsInColum:index];
         if (column > 0) {
@@ -149,6 +166,8 @@
         [self.titleButton setTitleColor:DDMColor(18, 108, 255) forState:UIControlStateNormal];
         [self.titleButton setTitleColor:[UIColor redColor] forState:UIControlStateSelected];
         
+        self.titleButton.adjustsImageWhenHighlighted = NO;
+        
         [self.titleButton setTag:index + 1100];
         self.titleButton.frame = CGRectMake(index * titleBtnWidth, 0, titleBtnWidth, self.titleMenuHeight);
         [self addSubview:self.titleButton];
@@ -157,6 +176,7 @@
         [self.titleButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -(self.titleButton.imageView.bounds.size.width + 4), 0, self.titleButton.imageView.bounds.size.width + 4)];
         [self.titleButton setImageEdgeInsets:UIEdgeInsetsMake(0, self.titleButton.titleLabel.bounds.size.width, 0, -self.titleButton.titleLabel.bounds.size.width)];
 
+        /**添加竖线*/
         if (index > 0) {
             UIImageView *line = [[UIImageView alloc] init];
             line.frame = CGRectMake(titleBtnWidth * index, 10, 0.5, 21);
@@ -164,6 +184,7 @@
             [self addSubview:line];
         }
     }
+    /**添加横线*/
     UIView * BottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.titleButton.frame), DDMWIDTH, 1)];
     BottomLine.backgroundColor = DDMColor(224, 224, 224);
     [self addSubview:BottomLine];
@@ -180,7 +201,7 @@
     [self removeMenu:0.25];
 
    if (sender.selected) {
-        //sender.imageView.transform = CGAffineTransformMakeRotation(M_PI);
+//        sender.imageView.transform = CGAffineTransformMakeRotation(M_PI);
         [self setupCover];
         self.DropDownMenuView.backgroundColor = DDMColor(255, 255, 255);
         [UIView animateWithDuration:(0.25) animations:^{
@@ -198,7 +219,6 @@
         //}
     }
     else {
-
     }
     
     // 代理点击事件
@@ -206,8 +226,6 @@
         [self.delegate menu:self didSelectTitleAtColumn:sender.tag];
     }
     [self.leftTableView reloadData];
-    
-    
 }
 -(void)initView {
     self.currrntSelectedColumn = 1100;
@@ -248,6 +266,7 @@
 - (void)coverClick
 {
     [self removeMenu:0.2];
+    [self resetImageViewTransform];
 }
 
 /**
@@ -258,15 +277,12 @@
     [UIView animateWithDuration:(AniateTime) animations:^{
         CGRect frame = CGRectMake(0, self.frame.size.height + self.frame.origin.y, DDMWIDTH, 0);
         self.DropDownMenuView.frame = frame;
-        
         self.leftTableView.frame = CGRectMake(0, 0, DDMWIDTH, 0);
-        
         self.cover.alpha = 0;
-        [self resetImageViewTransform];
         [self.cover removeFromSuperview];
     }];
 }
-
+/**在VC里的ViewwillDisappear的时候使用*/
 -(void)rightNowDismis {
     [self removeMenu:0];
 }
@@ -276,14 +292,17 @@
  *  回归角标
  */
 -(void)resetImageViewTransform {
-//    for (UIView * view in self.subviews) {
-//        if (view.tag > 1000) {
-//            ((UIButton *)view).imageView.transform = CGAffineTransformMakeRotation(0);
-//        }
-//    }
+    for (UIView * view in self.subviews) {
+        if (view.tag > 1000) {
+            //((UIButton *)view).imageView.transform = CGAffineTransformMakeRotation(0);
+            
+            /**让所有title重置为normal状态*/
+            ((UIButton *)view).selected = NO;
+        }
+    }
 }
 
-
+/**获取当前window*/
 - (UIWindow *)getCurrentWindowView {
     UIWindow * window = [[UIApplication sharedApplication] keyWindow];
     if (window.windowLevel != UIWindowLevelNormal)
@@ -348,10 +367,11 @@
         [self.delegate menu:self didSelectRowAtIndexPath:path];
     }
     [self setSelectTitle:indexPath];
-    [self dismiss];
+    [self coverClick];
 }
 
 #pragma mark - 设置选中cell重新设置成标题
+/**设置选中cell重新设置成标题*/
 -(void)setSelectTitle:(NSIndexPath *)indexPath {
     [UIView animateWithDuration:0.15 animations:^{
         NSString * selectTitle = [self titleForRowAtIndexPath:[HZIndexPath indexPathWithColumn:self.currrntSelectedColumn - 1100 row:indexPath.row]];
@@ -363,11 +383,12 @@
     }];
 }
 
+/**获取标题*/
 -(NSString *)titleForRowAtIndexPath:(HZIndexPath *)indexPath {
     return [self.dataSource menu:self titleForRowAtIndexPath:indexPath];
 }
 
-
+/**默认选中的点击的行*/
 -(void)setMenuWithSelectedRow:(NSInteger)row {
     self.currentSelectedRows[self.currrntSelectedColumn - 1100] = @(row);
 }
